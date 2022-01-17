@@ -50,3 +50,15 @@ func AddList(listname string) error {
 func RemoveList(listId string) error {
 	return Srv.Tasklists.Delete(listId).Do()
 }
+
+func AddTask(tasklistId, taskName string) error {
+	task := &tasks.Task{
+		Title: taskName,
+	}
+	_, err := Srv.Tasks.Insert(tasklistId, task).Do()
+	return err
+}
+
+func RemoveTask(tasklistId, taskId string) error {
+	return Srv.Tasks.Delete(tasklistId, taskId).Do()
+}

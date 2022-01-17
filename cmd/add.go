@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
+	"log"
 
+	"github.com/bilou4/google-tasks-cli/api"
 	"github.com/spf13/cobra"
 )
 
@@ -16,10 +17,23 @@ var addCmd = &cobra.Command{
 		if len(args) < 2 {
 			return errors.New("requires a list name and a task name")
 		}
-		return nil
+		listsIds, err = api.GetLists()
+		if err != nil {
+			return err
+		}
+		for listname := range listsIds {
+			if listname == args[0] {
+				return nil
+			}
+		}
+		return errors.New("This list name does not exist")
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("add called")
+		err = api.AddTask(listsIds[args[0]], args[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println("Task added")
 	},
 }
 

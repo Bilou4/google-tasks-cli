@@ -12,6 +12,7 @@ import (
 
 var (
 	listsIds map[string]string
+	tasksIds map[string]string
 	err      error
 )
 
