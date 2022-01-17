@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	. "github.com/bilou4/google-tasks-cli/constants"
+	"google.golang.org/api/tasks/v1"
 )
 
 func GetLists() (map[string]string, error) {
@@ -35,4 +36,17 @@ func GetTasks(listId string) (map[string]string, error) {
 		taskId[i.Title] = i.Id
 	}
 	return taskId, nil
+}
+
+func AddList(listname string) error {
+	t := &tasks.TaskList{
+		Title: listname,
+	}
+	_, err := Srv.Tasklists.Insert(t).Do()
+
+	return err
+}
+
+func RemoveList(listId string) error {
+	return Srv.Tasklists.Delete(listId).Do()
 }

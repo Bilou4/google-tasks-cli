@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
+	"log"
 
+	"github.com/bilou4/google-tasks-cli/api"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,11 @@ var addListCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("addList called")
+		err = api.AddList(args[0])
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println("List added")
 	},
 }
 

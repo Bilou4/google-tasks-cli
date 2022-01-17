@@ -9,11 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	listsIds map[string]string
-	err      error
-)
-
 // getCmd represents the get command
 var getCmd = &cobra.Command{
 	Use:   "get <LIST-NAME>",
