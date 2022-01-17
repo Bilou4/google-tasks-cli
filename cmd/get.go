@@ -3,8 +3,15 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log"
 
+	"github.com/bilou4/google-tasks-cli/api"
 	"github.com/spf13/cobra"
+)
+
+var (
+	listsIds map[string]string
+	err      error
 )
 
 // getCmd represents the get command
@@ -16,10 +23,26 @@ var getCmd = &cobra.Command{
 		if len(args) < 1 {
 			return errors.New("requires a list name")
 		}
-		return nil
+		listsIds, err = api.GetLists()
+		if err != nil {
+			return err
+		}
+		for listname := range listsIds {
+			if listname == args[0] {
+				return nil
+			}
+		}
+		return errors.New("This list name does not exist")
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("get called", args)
+		tasksIds, err := api.GetTasks(listsIds[args[0]])
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("Tasks from list %v :\n", args[0])
+		for task := range tasksIds {
+			fmt.Printf("\t%s\n", task)
+		}
 	},
 }
 

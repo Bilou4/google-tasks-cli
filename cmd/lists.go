@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/bilou4/google-tasks-cli/api"
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +14,14 @@ var listsCmd = &cobra.Command{
 	Short: "returns all existing lists",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("lists called")
+		listId, err := api.GetLists()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Task Lists:")
+		for list := range listId {
+			fmt.Printf("\t%s\n", list)
+		}
 	},
 }
 
