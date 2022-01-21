@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
+	"log"
 
+	"github.com/bilou4/google-tasks-cli/api"
 	"github.com/spf13/cobra"
 )
 
@@ -16,10 +17,24 @@ var renameListCmd = &cobra.Command{
 		if len(args) < 2 {
 			return errors.New("requires the old list name and a new list name")
 		}
+		listsIds, err = api.GetLists()
+		if err != nil {
+			return err
+		}
+		// checks the oldListName exists
+		for listname := range listsIds {
+			if listname == args[0] {
+				return nil
+			}
+		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("renameList called")
+		err := api.RenameList(listsIds[args[0]], args[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println("List has been renamed")
 	},
 }
 

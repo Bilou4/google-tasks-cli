@@ -62,3 +62,16 @@ func AddTask(tasklistId, taskName string) error {
 func RemoveTask(tasklistId, taskId string) error {
 	return Srv.Tasks.Delete(tasklistId, taskId).Do()
 }
+
+func RenameList(listId, newName string) error {
+	list := &tasks.TaskList{
+		Title: newName,
+		Id:    listId,
+	}
+
+	_, err := Srv.Tasklists.Update(listId, list).Do()
+	if err != nil {
+		return err
+	}
+	return nil
+}
