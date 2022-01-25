@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"log"
 
 	"github.com/bilou4/google-tasks-cli/api"
@@ -21,19 +22,16 @@ var rmCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		// TODO: change the error according to the case
-		for listname := range listsIds {
-			if listname == args[0] {
-				break
-			}
+
+		if _, ok := listsIds[args[0]]; !ok {
+			return errors.New(fmt.Sprintf("'%s' listname does not exist", args[0]))
 		}
+
 		tasksIds, err = api.GetTasks(listsIds[args[0]])
-		for taskname := range tasksIds {
-			if taskname == args[1] {
-				return nil
-			}
+		if _, ok := tasksIds[args[1]]; ok {
+			return nil
 		}
-		return errors.New("This list/task name does not exist")
+		return errors.New(fmt.Sprintf("'%s' taskname does not exist", args[1]))
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		err = api.RemoveTask(listsIds[args[0]], tasksIds[args[1]])

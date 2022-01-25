@@ -1,7 +1,3 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
@@ -11,6 +7,7 @@ import (
 )
 
 var (
+	// map[title] = id
 	listsIds map[string]string
 	tasksIds map[string]string
 	err      error

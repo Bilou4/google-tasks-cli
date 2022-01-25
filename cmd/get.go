@@ -22,12 +22,10 @@ var getCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		for listname := range listsIds {
-			if listname == args[0] {
-				return nil
-			}
+		if _, ok := listsIds[args[0]]; ok {
+			return nil
 		}
-		return errors.New("This list name does not exist")
+		return errors.New(fmt.Sprintf("'%s' listname does not exist", args[0]))
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		tasksIds, err := api.GetTasks(listsIds[args[0]])
