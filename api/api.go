@@ -51,9 +51,14 @@ func RemoveList(listId string) error {
 	return Srv.Tasklists.Delete(listId).Do()
 }
 
-func AddTask(tasklistId, taskName string) error {
+func AddTask(tasklistId, taskName, dueDate, notes string) error {
+	if dueDate != "" {
+		dueDate += "T00:00:00.00Z"
+	}
 	task := &tasks.Task{
 		Title: taskName,
+		Due:   dueDate,
+		Notes: notes,
 	}
 	_, err := Srv.Tasks.Insert(tasklistId, task).Do()
 	return err
@@ -70,6 +75,20 @@ func RenameList(listId, newName string) error {
 	}
 
 	_, err := Srv.Tasklists.Update(listId, list).Do()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func TaskDone(listId, taskId string) error {
+	task, err := Srv.Tasks.Get(listId, taskId).Do()
+	if err != nil {
+		return err
+	}
+
+	task.Status = "completed"
+	_, err = Srv.Tasks.Update(listId, taskId, task).Do()
 	if err != nil {
 		return err
 	}
