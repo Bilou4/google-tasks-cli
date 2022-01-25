@@ -28,7 +28,7 @@ var rmListCmd = &cobra.Command{
 		return errors.New(fmt.Sprintf("'%s' listname does not exist", args[0]))
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		err = api.RemoveList(listsIds[args[0]])
+		err = api.RemoveList(listsIds[args[0]].Id)
 		if err != nil {
 			log.Fatal(err)
 		}

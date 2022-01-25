@@ -27,14 +27,14 @@ var rmCmd = &cobra.Command{
 			return errors.New(fmt.Sprintf("'%s' listname does not exist", args[0]))
 		}
 
-		tasksIds, err = api.GetTasks(listsIds[args[0]])
+		tasksIds, err = api.GetTasks(listsIds[args[0]].Id)
 		if _, ok := tasksIds[args[1]]; ok {
 			return nil
 		}
 		return errors.New(fmt.Sprintf("'%s' taskname does not exist", args[1]))
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		err = api.RemoveTask(listsIds[args[0]], tasksIds[args[1]])
+		err = api.RemoveTask(listsIds[args[0]].Id, tasksIds[args[1]].Id)
 		if err != nil {
 			log.Fatal(err)
 		}

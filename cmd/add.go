@@ -37,7 +37,7 @@ var addCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		err = api.AddTask(listsIds[args[0]], args[1], cmd.Flag("due-date").Value.String(), cmd.Flag("notes").Value.String())
+		err = api.AddTask(listsIds[args[0]].Id, args[1], cmd.Flag("due-date").Value.String(), cmd.Flag("notes").Value.String())
 		if err != nil {
 			log.Fatal(err)
 		}

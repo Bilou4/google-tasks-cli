@@ -8,8 +8,8 @@ import (
 	"google.golang.org/api/tasks/v1"
 )
 
-func GetLists() (map[string]string, error) {
-	listId := make(map[string]string)
+func GetLists() (map[string]*tasks.TaskList, error) {
+	listId := make(map[string]*tasks.TaskList)
 
 	r, err := Srv.Tasklists.List().Do()
 	if err != nil {
@@ -17,7 +17,7 @@ func GetLists() (map[string]string, error) {
 	}
 	if len(r.Items) > 0 {
 		for _, i := range r.Items {
-			listId[i.Title] = i.Id
+			listId[i.Title] = i
 		}
 	} else {
 		return nil, errors.New("No task lists found.")
@@ -25,15 +25,16 @@ func GetLists() (map[string]string, error) {
 	return listId, nil
 }
 
-func GetTasks(listId string) (map[string]string, error) {
-	taskId := make(map[string]string)
+func GetTasks(listId string) (map[string]*tasks.Task, error) {
+	taskId := make(map[string]*tasks.Task)
 
 	tasks, err := Srv.Tasks.List(listId).Do()
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Unable to retrieve tasks from lists: %v. %v", listId, err))
 	}
 	for _, i := range tasks.Items {
-		taskId[i.Title] = i.Id
+		taskId[i.Title] = i
+
 	}
 	return taskId, nil
 }

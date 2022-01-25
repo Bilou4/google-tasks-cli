@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/bilou4/google-tasks-cli/api"
+	. "github.com/bilou4/google-tasks-cli/constants"
+	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )
 
@@ -18,10 +20,12 @@ var listsCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("Task Lists:")
-		for list := range listId {
-			fmt.Printf("\t%s\n", list)
+
+		Table.AppendHeader(table.Row{"ID", "Title"})
+		for _, list := range listId {
+			Table.AppendRow(table.Row{fmt.Sprintf("%s", list.Id), fmt.Sprintf("%s", list.Title)})
 		}
+		Table.Render()
 	},
 }
 

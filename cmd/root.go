@@ -4,12 +4,13 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"google.golang.org/api/tasks/v1"
 )
 
 var (
-	// map[title] = id
-	listsIds map[string]string
-	tasksIds map[string]string
+	// key = title
+	listsIds map[string]*tasks.TaskList
+	tasksIds map[string]*tasks.Task
 	err      error
 )
 

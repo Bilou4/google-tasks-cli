@@ -6,6 +6,8 @@ import (
 	"log"
 
 	"github.com/bilou4/google-tasks-cli/api"
+	. "github.com/bilou4/google-tasks-cli/constants"
+	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )
 
@@ -28,14 +30,16 @@ var getCmd = &cobra.Command{
 		return errors.New(fmt.Sprintf("'%s' listname does not exist", args[0]))
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		tasksIds, err := api.GetTasks(listsIds[args[0]])
+		tasksIds, err := api.GetTasks(listsIds[args[0]].Id)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Printf("Tasks from list %v :\n", args[0])
-		for task := range tasksIds {
-			fmt.Printf("\t%s\n", task)
+		Table.AppendHeader(table.Row{"ID", "Title", "Notes", "Due date"})
+		for _, task := range tasksIds {
+			Table.AppendRow(table.Row{fmt.Sprintf("%s", task.Id), fmt.Sprintf("%s", task.Title), fmt.Sprintf("%s", task.Notes), fmt.Sprintf("%s", task.Due)})
 		}
+		Table.Render()
 	},
 }
 

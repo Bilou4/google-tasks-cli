@@ -31,7 +31,7 @@ var renameListCmd = &cobra.Command{
 		return errors.New(fmt.Sprintf("'%s' listname does not exist", args[0]))
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		err := api.RenameList(listsIds[args[0]], args[1])
+		err := api.RenameList(listsIds[args[0]].Id, args[1])
 		if err != nil {
 			log.Fatal(err)
 		}
