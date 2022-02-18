@@ -1,7 +1,7 @@
 # google-tasks-cli
 
 
-A simple CLI to manage your lists of tasks in your Google Tasks application.
+A simple (non official) CLI to manage your lists of tasks in your Google Tasks application.
 
 
 Here are available subcommands :
@@ -16,6 +16,10 @@ google-tasks-cli get <ListName> # prints all tasks from an existing list
 google-tasks-cli rm <ListName> <TaskName> # removes a task from an existing list
 ~~~
 
+
+## Prerequisites
+
+Before using the app, you need to follow [these steps](https://developers.google.com/tasks/firstapp#register) so as to be able to send requests to the Google Tasks API.
 
 ## TODO
 
